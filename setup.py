@@ -14,6 +14,13 @@ with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 requirements = [
+    'tendril-config>=0.1.7',
+    'tendril-identity>=0.1.7',
+    'tendril-utils-core>=0.1.13',
+    'tendril-utils-vcs>=0.1.1',
+    'tendril-utils-pdf>=0.1.1',
+    'tendril-utils-gschem-files>=0.1.1',
+    'tendril-conventions-electronics>=0.1.1',
 ]
 
 test_requirements = [
