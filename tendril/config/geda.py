@@ -53,7 +53,7 @@ config_elements_geda = [
     ConfigOption(
         'MAKE_GSYMLIB_IMG_CACHE',
         "True",
-        "Whether or not to generate the gsymlib image cache."
+        "Whether or not to generate the geda symbol library image cache."
     ),
 ]
 
