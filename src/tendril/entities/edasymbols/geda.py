@@ -36,7 +36,8 @@ logger = log.get_logger(__name__, log.INFO)
 
 
 class GSymGeneratorFile(EDASymbolGeneratorBase):
-    supports_schema_name = 'gsymgenerator'
+    legacy_schema_name = 'gsymgenerator'
+    supports_schema_name = 'gEDASymbolGenerator'
     supports_schema_version_max = Decimal('1.0')
     supports_schema_version_min = Decimal('1.0')
 

@@ -33,7 +33,6 @@ from tendril.config import USE_SYSTEM_GAF_BIN
 from tendril.config import GEDA_HAS_GAF
 from tendril.config import GAF_BIN_ROOT
 from tendril.config import PROJECTS_ROOT
-from tendril.identity import primary_persona
 
 from tendril.utils import log
 logger = log.get_logger(__name__, log.INFO)
@@ -93,6 +92,7 @@ def rewrite_schematic(inpath, obom, gpf, outpath):
         lx += getattr(tb, '_x')
         ly += getattr(tb, '_y')
         tb.remove_attribute('logo')
+        from tendril.identity.persona import primary_persona
         lines = gschf.GschFakeLines([primary_persona.square_logo])
         logo = gschf.GschElementPicture(f, lines, lx, ly, lw, lh, 0, 0, 0)
         f.add_element(logo)
