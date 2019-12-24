@@ -23,7 +23,66 @@ gEDA Project Configuration Schema Stub
 --------------------------------------
 """
 
-from tendril.entities.projects.geda import gEDAProjectConfig
+import os
+from decimal import Decimal
+
+from tendril.connectors.geda.projfile import GedaProjectFile
+from tendril.entities.projects.eda import EDAProjectConfig
+from tendril.entities.projects.config import NoProjectError
+from tendril.validation.files import ExtantFile
+
+
+class NoGedaProjectError(NoProjectError):
+    pass
+
+
+class gEDAProjectConfig(EDAProjectConfig):
+    legacy_schema_name = 'pcbconfigs'
+    supports_schema_name = 'gEDAProjectConfig'
+    supports_schema_version_max = Decimal('1.0')
+    supports_schema_version_min = Decimal('1.0')
+    FileNotFoundExceptionType = NoGedaProjectError
+    configs_location = ['schematic', 'configs.yaml']
+
+    def __init__(self, *args, **kwargs):
+        self._projfile_obj = None
+        super(gEDAProjectConfig, self).__init__(*args, **kwargs)
+
+    def elements(self):
+        e = super(gEDAProjectConfig, self).elements()
+        e.update({
+            '_projfile': self._p('projfile', required=True,
+                                 parser=ExtantFile,
+                                 parser_args={'basedir': self.basefolder})
+        })
+        return e
+
+    @property
+    def projfile(self):
+        if not self._projfile_obj:
+            self._projfile_obj = GedaProjectFile(self._projfile.filepath)
+            self._projfile_obj.validate()
+            self._validation_errors.add(self._projfile_obj.validation_errors)
+        return self._projfile_obj
+
+    @property
+    def pcbpath(self):
+        return self.projfile.pcbpath
+
+    @property
+    def schpaths(self):
+        return self.projfile.schpaths
+
+    def _process(self):
+        super(gEDAProjectConfig, self)._process()
+        _ = self.projfile
+
+    @property
+    def _pcb_allowed(self):
+        if os.path.split(self.basefolder)[1] == 'schematic':
+            return True
+        else:
+            return False
 
 
 def load(manager):
