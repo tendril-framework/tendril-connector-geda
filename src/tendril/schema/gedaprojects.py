@@ -27,8 +27,8 @@ import os
 from decimal import Decimal
 
 from tendril.connectors.geda.projfile import GedaProjectFile
-from tendril.entities.projects.eda import EDAProjectConfig
-from tendril.entities.projects.config import NoProjectError
+from tendril.schema.edaprojects import EDAProjectConfig
+from tendril.schema.projects.config import NoProjectError
 from tendril.validation.files import ExtantFile
 
 
