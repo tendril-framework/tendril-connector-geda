@@ -18,14 +18,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-gEDA Project Class
-------------------
-"""
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)
 
-from tendril.schema.gedaprojects import gEDAProjectConfig
-from .eda import EDAProject
+from .manager import ProjectLibraryManager
+_manager = ProjectLibraryManager(prefix='tendril.libraries.projects')
 
-
-class gEDAProject(EDAProject):
-    _config_class = gEDAProjectConfig
+import sys
+sys.modules[__name__] = _manager
