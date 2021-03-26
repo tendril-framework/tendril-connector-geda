@@ -19,7 +19,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from decimal import Decimal
 
 from tendril.config import GEDA_SUBCIRCUITS_ROOT
 from tendril.config import INSTANCE_CACHE
@@ -29,24 +28,10 @@ from tendril.utils.fsutils import get_file_mtime
 from tendril.connectors.geda.gschem import conv_gsch2png
 
 from tendril.entities.edasymbols.base import EDASymbolBase
-from tendril.entities.edasymbols.generator import EDASymbolGeneratorBase
+from tendril.schema.gedasymbols import GSymGeneratorFile
 
 from tendril.utils import log
 logger = log.get_logger(__name__, log.INFO)
-
-
-class GSymGeneratorFile(EDASymbolGeneratorBase):
-    legacy_schema_name = 'gsymgenerator'
-    supports_schema_name = 'gEDASymbolGenerator'
-    supports_schema_version_max = Decimal('1.0')
-    supports_schema_version_min = Decimal('1.0')
-
-    def __init__(self, genpath):
-        self._sympath = genpath.replace('.gen.yaml', '.sym')
-        super(GSymGeneratorFile, self).__init__(genpath)
-
-    def symbol_template(self):
-        return GedaSymbol(self._sympath)
 
 
 class GedaSymbol(EDASymbolBase):
@@ -107,11 +92,11 @@ class GedaSymbol(EDASymbolBase):
 
         if self.is_generator:
             _genftime = get_file_mtime(self.genpath)
-            if not _genftime or _genftime > _last_updated:
+            if _genftime and (not _last_updated or _genftime > _last_updated):
                 _last_updated = _genftime
         if self.is_subcircuit:
             _schftime = get_file_mtime(self.schematic_path)
-            if not _last_updated or _schftime > _last_updated:
+            if _schftime and (not _last_updated or _schftime > _last_updated):
                 _last_updated = _schftime
         self.last_updated = _last_updated
 

@@ -23,7 +23,23 @@ gEDA Symbol Generator Schema
 ----------------------------
 """
 
-from tendril.entities.edasymbols.geda import GSymGeneratorFile
+from decimal import Decimal
+from tendril.schema.edasymbols import EDASymbolGeneratorBase
+
+
+class GSymGeneratorFile(EDASymbolGeneratorBase):
+    legacy_schema_name = 'gsymgenerator'
+    supports_schema_name = 'gEDASymbolGenerator'
+    supports_schema_version_max = Decimal('1.0')
+    supports_schema_version_min = Decimal('1.0')
+
+    def __init__(self, genpath):
+        self._sympath = genpath.replace('.gen.yaml', '.sym')
+        super(GSymGeneratorFile, self).__init__(genpath)
+
+    def symbol_template(self):
+        from tendril.entities.edasymbols.geda import GedaSymbol
+        return GedaSymbol(self._sympath)
 
 
 def load(manager):
