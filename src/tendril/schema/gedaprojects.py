@@ -28,11 +28,11 @@ from decimal import Decimal
 
 from tendril.connectors.geda.projfile import GedaProjectFile
 from tendril.schema.edaprojects import EDAProjectConfig
-from tendril.schema.projects.config import NoProjectError
+from tendril.schema.projects.config import NoProjectConfigError
 from tendril.validation.files import ExtantFile
 
 
-class NoGedaProjectError(NoProjectError):
+class NoGedaProjectConfigError(NoProjectConfigError):
     pass
 
 
@@ -41,7 +41,7 @@ class gEDAProjectConfig(EDAProjectConfig):
     supports_schema_name = 'gEDAProjectConfig'
     supports_schema_version_max = Decimal('1.0')
     supports_schema_version_min = Decimal('1.0')
-    FileNotFoundExceptionType = NoGedaProjectError
+    FileNotFoundExceptionType = NoGedaProjectConfigError
     configs_location = ['schematic', 'configs.yaml']
 
     def __init__(self, *args, **kwargs):

@@ -55,6 +55,11 @@ config_elements_geda = [
         "True",
         "Whether or not to generate the geda symbol library image cache."
     ),
+    ConfigOption(
+        "GEDA_PROJECTS_ROOT",
+        "PROJECTS_ROOT",
+        "Folder containing all gEDA projects to track",
+    )
 ]
 
 
